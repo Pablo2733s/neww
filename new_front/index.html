@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interface Front-end</title>
+    <style>
+      body {
+        background-color: lightblue;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        border: 1px solid rgb(173, 229, 236);
+        text-align: left;
+        padding: 8px;
+      }
+
+      th {
+        background-color: rgb(207, 244, 253);
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center">Dados da Educação Básica</h1>
+
+    <button onclick="buscarDados()">Buscar Dados</button>
+
+    <table id="dadosTable">
+      <thead>
+        <tr>
+          <th>Ano</th>
+          <th>Sigla UF</th>
+          <th>ID Município</th>
+          <th>ID Escola</th>
+          <th>Rede</th>
+          <th>Ensino</th>
+          <th>Anos Escolares</th>
+          <th>Taxa de Aprovação</th>
+          <th>Rendimento</th>
+          <th>Nota Matemática</th>
+          <th>Nota Português</th>
+          <th>Nota Média Padronizada</th>
+          <th>IDEB</th>
+          <th>Projeção</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      // Função para carregar os dados da API e exibir na tabela
+      async function carregarDados() {
+        try {
+          const response = await fetch("http://localhost:3000/escolas");
+          const data = await response.json();
+
+          const tableBody = document.querySelector("#dadosTable tbody");
+          tableBody.innerHTML = "";
+
+          data.forEach((item) => {
+            const row = document.createElement("tr");
+            Object.values(item).forEach((value) => {
+              const cell = document.createElement("td");
+              cell.textContent = value;
+              row.appendChild(cell);
+            });
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Erro ao carregar dados:", error);
+        }
+      }
+
+      // Função para buscar dados quando o botão for clicado
+      function buscarDados() {
+        carregarDados();
+      }
+    </script>
+  </body>
+</html>
